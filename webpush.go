@@ -42,6 +42,7 @@ type Options struct {
 	Topic           string     // Set the Topic header to collapse a pending messages (Optional)
 	TTL             int        // Set the TTL on the endpoint POST request
 	Urgency         Urgency    // Set the Urgency header to change a message priority (Optional)
+	VAPIDPublicKey  string
 	VAPIDPrivateKey string     // Used to sign VAPID JWT token
 	// Used for Authorization in older Chromium browsers:
 	// https://web-push-book.gauntface.com/chapter-06/01-non-standards-browsers/#what-is-gcm_sender_id
