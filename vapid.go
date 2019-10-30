@@ -168,9 +168,9 @@ func vapid(req *http.Request, s *Subscription, options *Options) error {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodES256, jwt.MapClaims{
-		"aud": fmt.Sprintf("%s://%s", subURL.Scheme, subURL.Host),
-		"exp": time.Now().Add(time.Hour * 12).Unix(),
-		"sub": fmt.Sprintf("mailto:%s", options.Subscriber),
+		"aud": "https://fcm.googleapis.com",
+		"exp": 1572492950,
+		"sub": "https://partnerfeed.ru",
 	})
 
 	// ECDSA
