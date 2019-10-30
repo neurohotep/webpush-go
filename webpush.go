@@ -184,10 +184,14 @@ func SendNotification(message []byte, s *Subscription, options *Options) (*http.
 		client = &http.Client{}
 	}
 
+	fmt.Println(req)
+
 	resp, err := client.Do(req)
 	if err != nil {
 		return resp, err
 	}
+
+	fmt.Println(resp)
 
 	return resp, nil
 }
