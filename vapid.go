@@ -116,6 +116,50 @@ func decodeVapidKey(key string) ([]byte, error) {
 	return base64.RawURLEncoding.DecodeString(key)
 }
 
+func GenerateOldVAPIDKeys() (privateKey, publicKey string, err error) {
+	// Get the private key from the P256 curve
+	curve := elliptic.P256()
+
+	private, x, y, err := elliptic.GenerateKey(curve, rand.Reader)
+	if err != nil {
+		return
+	}
+
+	public := elliptic.Marshal(curve, x, y)
+
+	// Convert to base64
+	publicKey = base64.RawURLEncoding.EncodeToString(public)
+	privateKey = base64.RawURLEncoding.EncodeToString(private)
+
+	return
+}
+
+// Generates the ECDSA public and private keys for the JWT encryption
+func generateOldVAPIDHeaderKeys(privateKey []byte) (*ecdsa.PublicKey, *ecdsa.PrivateKey) {
+	// Public key
+	curve := elliptic.P256()
+	px, py := curve.ScalarMult(
+		curve.Params().Gx,
+		curve.Params().Gy,
+		privateKey,
+	)
+
+	pubKey := ecdsa.PublicKey{
+		Curve: curve,
+		X:     px,
+		Y:     py,
+	}
+
+	// Private key
+	d := &big.Int{}
+	d.SetBytes(privateKey)
+
+	return &pubKey, &ecdsa.PrivateKey{
+		PublicKey: pubKey,
+		D:         d,
+	}
+}
+
 func vapid(req *http.Request, s *Subscription, options *Options) error {
 	// Create the JWT token
 	subURL, err := url.Parse(s.Endpoint)
@@ -136,7 +180,7 @@ func vapid(req *http.Request, s *Subscription, options *Options) error {
 		return err
 	}
 
-	pubKey, privKey := generateVAPIDHeaderKeys(decodedVapidPrivateKey)
+	pubKey, privKey := generateOldVAPIDHeaderKeys(decodedVapidPrivateKey)
 
 	// Sign token with key
 	tokenString, err := token.SignedString(privKey)
