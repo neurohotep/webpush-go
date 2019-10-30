@@ -162,10 +162,10 @@ func generateOldVAPIDHeaderKeys(privateKey []byte) (*ecdsa.PublicKey, *ecdsa.Pri
 
 func vapid(req *http.Request, s *Subscription, options *Options) error {
 	// Create the JWT token
-	subURL, err := url.Parse(s.Endpoint)
+	/*subURL, err := url.Parse(s.Endpoint)
 	if err != nil {
 		return err
-	}
+	}*/
 
 	token := jwt.NewWithClaims(jwt.SigningMethodES256, jwt.MapClaims{
 		"aud": "https://fcm.googleapis.com",
