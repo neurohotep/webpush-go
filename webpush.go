@@ -153,7 +153,7 @@ func SendNotification(message []byte, s *Subscription, options *Options) (*http.
 	}
 
 	req.Header.Set("Encryption", fmt.Sprintf("salt=%s", base64.RawURLEncoding.EncodeToString(salt)))
-	req.Header.Set("Crypto-Key", fmt.Sprintf("dh=%s", base64.RawURLEncoding.EncodeToString(publicKey)))
+	req.Header.Set("Crypto-Key", fmt.Sprintf("dh=%s;p256ecdsa=BAmG2yTG8ZaNvBZ6Ol_oD_g9NhbN7nHJ7kcL63-S9zpqFGsjQoZs77rCDFXV_98e-IpI5axJFaACkbmmLstBMOU", base64.RawURLEncoding.EncodeToString(publicKey)))
 	req.Header.Set("Content-Encoding", "aesgcm")
 	req.Header.Set("TTL", strconv.Itoa(options.TTL))
 
